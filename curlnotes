@@ -1,0 +1,7 @@
+curl -X POST http://localhost:8000/books/create -H 'Content-Type: application/json' -d '{"title":"my_login","publicationDate":"2023-09-18", "authors": [{ "name": "pushkin"}]}'
+curl -X PUT http://localhost:8000/books/update/2 -H 'Content-Type: application/json' -d '{"title":"popopop","publicationDate":"2024-09-10"}'
+curl -X DELETE http://localhost:8000/books/delete/2
+
+curl -X POST http://localhost:8000/authors/create -H 'Content-Type: application/json' -d '{"name": "pushkin", "books": [{ "title":"my_login","publicationDate":"2023-09-18", "authors"}]}'
+curl -X PUT http://localhost:8000/authors/update/2 -H 'Content-Type: application/json' -d '{"name":"vasiliy"}'
+curl -X DELETE http://localhost:8000/authors/delete/2

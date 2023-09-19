@@ -1,0 +1,19 @@
+services:
+  web:
+    build: .
+    command: >
+          bash -c "
+             npx sequelize-cli db:migrate &&
+             npx sequelize-cli db:seed:all &&
+             node app.js
+          "
+        
+    ports:
+      - 3030:3030
+    depends_on:
+      - db
+    restart: on-failure
+  db:
+    image: postgres:13
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"

@@ -14,6 +14,9 @@ async function GET(req, res) {
     let books = await _models.default.Book.findAll({
       include: _models.default.Author
     });
+    if (!books) {
+      res.status(404).send();
+    }
     res.json(books);
   } catch (e) {
     res.status(500).send();
@@ -22,6 +25,13 @@ async function GET(req, res) {
 GET.apiDoc = {
   summary: "Fetch list of books.",
   operationId: "getBooks",
+  parameters: [{
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
+  }],
   responses: {
     200: {
       description: "List of books.",
@@ -34,6 +44,9 @@ GET.apiDoc = {
     },
     500: {
       description: "Internal Server Error"
+    },
+    404: {
+      description: "Not Found"
     }
   }
 };

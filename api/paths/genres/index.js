@@ -17,10 +17,12 @@ async function GET(req, res) {
         as: 'books'
       }
     });
+    if (!genre) {
+      res.status(404).send();
+    }
     res.json(genre);
   } catch (e) {
-    console.log(e);
-    res.status(404).send();
+    res.status(500).send();
   }
 }
 GET.apiDoc = {
@@ -31,9 +33,15 @@ GET.apiDoc = {
     in: "query",
     name: "id",
     type: "number"
+  }, {
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
   }],
   responses: {
-    201: {
+    200: {
       description: "Fetch one genre",
       schema: {
         type: "object",
@@ -42,6 +50,9 @@ GET.apiDoc = {
     },
     404: {
       description: "Not Found"
+    },
+    500: {
+      description: "Server error"
     }
   }
 };

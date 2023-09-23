@@ -17,9 +17,12 @@ async function GET(req, res) {
     let authors = await _models.default.Author.findByPk(req.params.id, {
       include: _models.default.Book
     });
+    if (!authors) {
+      res.status(404).send();
+    }
     res.json(authors);
   } catch (e) {
-    res.status(404).send();
+    res.status(500).send();
   }
 }
 async function POST(req, res) {
@@ -78,6 +81,12 @@ GET.apiDoc = {
     in: "query",
     name: "id",
     type: "number"
+  }, {
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
   }],
   responses: {
     200: {
@@ -89,11 +98,14 @@ GET.apiDoc = {
     },
     404: {
       description: "Not Found"
+    },
+    500: {
+      description: "Server error"
     }
   }
 };
 POST.apiDoc = {
-  summary: "Create author.",
+  summary: "Create author(admin role required).",
   operationId: "createAuthor",
   consumes: ["application/json"],
   parameters: [{
@@ -102,6 +114,12 @@ POST.apiDoc = {
     schema: {
       $ref: "#/definitions/AuthorAndBooks"
     }
+  }, {
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
   }],
   responses: {
     200: {
@@ -117,7 +135,7 @@ POST.apiDoc = {
   }
 };
 PUT.apiDoc = {
-  summary: "Update author.",
+  summary: "Update author(admin role required).",
   operationId: "updateAuthor",
   consumes: ["application/json"],
   parameters: [{
@@ -130,6 +148,12 @@ PUT.apiDoc = {
     schema: {
       $ref: "#/definitions/Author"
     }
+  }, {
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
   }],
   responses: {
     200: {
@@ -145,13 +169,19 @@ PUT.apiDoc = {
   }
 };
 DELETE.apiDoc = {
-  summary: "Delete author.",
+  summary: "Delete author(admin role required).",
   operationId: "deleteAuthor",
   consumes: ["application/json"],
   parameters: [{
     in: "query",
     name: "id",
     type: "number"
+  }, {
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
   }],
   responses: {
     200: {

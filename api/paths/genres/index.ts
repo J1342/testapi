@@ -13,10 +13,12 @@ async function GET(req: Request, res: Response) {
                as: 'books'
             } 
         })
+        if (!genre){
+          res.status(404).send();
+        }
         res.json(genre);
     }catch(e){
-        console.log(e)
-        res.status(404).send();
+        res.status(500).send();
     }
 }
 
@@ -31,6 +33,13 @@ GET.apiDoc = {
         name: "id",
         type: "number"
       },
+      {
+        name: "Authorization",
+        in: "header",
+        description: "JWT access token",
+        required: true,
+        type: "string"
+      }
     ],
     responses: {
       200: {
@@ -43,6 +52,9 @@ GET.apiDoc = {
       },
       404: {
         description: "Not Found"
+      },
+      500: {
+        description: "Server error"
       }
     },
 }

@@ -9,14 +9,16 @@ let operations = {
 }
 
 async function GET(req: Request, res: Response) {
-    console.log("hellosds")
     try{
         let book = await db.Book.findByPk(req.params.id, {
             include: db.Author
         })
+        if (!book){
+           res.status(404).send();
+        }
         res.json(book)
     }catch(e){
-        res.status(404).send()
+        res.status(500).send()
     }
 }
 
@@ -81,6 +83,13 @@ GET.apiDoc = {
         name: "id",
         type: "number"
       },
+      {
+        name: "Authorization",
+        in: "header",
+        description: "JWT access token",
+        required: true,
+        type: "string"
+      }
     ],
     responses: {
       200: {
@@ -93,12 +102,15 @@ GET.apiDoc = {
       },
       404: {
         description: "Not Found"
+      },
+      500: {
+        description: "Server error"
       }
     },
 }
 
 POST.apiDoc = {
-    summary: "Create book.",
+    summary: "Create book(admin role required).",
     operationId: "createBook",
     consumes: ["application/json"],
     parameters: [
@@ -109,6 +121,13 @@ POST.apiDoc = {
           $ref: "#/definitions/BookAndAuthors"
         }
       },
+      {
+        name: "Authorization",
+        in: "header",
+        description: "JWT access token",
+        required: true,
+        type: "string"
+      }
     ],
     responses: {
       200: {
@@ -126,7 +145,7 @@ POST.apiDoc = {
 }
 
 PUT.apiDoc = {
-    summary: "Update book.",
+    summary: "Update book(admin role required).",
     operationId: "updateBook",
     consumes: ["application/json"],
     parameters: [
@@ -142,6 +161,13 @@ PUT.apiDoc = {
           $ref: "#/definitions/Book"
         }
       },
+      {
+        name: "Authorization",
+        in: "header",
+        description: "JWT access token",
+        required: true,
+        type: "string"
+      }
     ],
     responses: {
       200: {
@@ -158,7 +184,7 @@ PUT.apiDoc = {
 }
 
 DELETE.apiDoc = {
-    summary: "Delete book.",
+    summary: "Delete book(admin role required).",
     operationId: "deleteBook",
     consumes: ["application/json"],
     parameters: [
@@ -167,6 +193,13 @@ DELETE.apiDoc = {
         name: "id",
         type: "number"
       },
+      {
+        name: "Authorization",
+        in: "header",
+        description: "JWT access token",
+        required: true,
+        type: "string"
+      }
     ],
     responses: {
       200: {

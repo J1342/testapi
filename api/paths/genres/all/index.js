@@ -25,6 +25,13 @@ async function GET(req, res) {
 GET.apiDoc = {
   summary: "Fetch list of genres.",
   operationId: "getGenres",
+  parameters: [{
+    name: "Authorization",
+    in: "header",
+    description: "JWT access token",
+    required: true,
+    type: "string"
+  }],
   responses: {
     200: {
       description: "List of genres.",
@@ -34,6 +41,9 @@ GET.apiDoc = {
           $ref: "#/definitions/Genre"
         }
       }
+    },
+    500: {
+      description: "Server error"
     }
   }
 };

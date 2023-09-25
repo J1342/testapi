@@ -1,17 +1,17 @@
 {
   "development": {
-    "username": "forms_admin",
-    "password": "qwerty",
-    "database": "ingame",
-    "host": "localhost",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "postgres",
+    "host": "db",
     "dialect": "postgres",
     "logging": false
   },
   "test": {
-    "username": "forms_admin",
-    "password": "qwerty",
-    "database": "ingame",
-    "host": "localhost",
+    "username": "postgres",
+    "password": "postgres",
+    "database": "postgres",
+    "host": "test_db",
     "dialect": "postgres",
     "logging": false
   },

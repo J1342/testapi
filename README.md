@@ -9,3 +9,4 @@
 2. cd testapi
 3. docker-compose up -d
 4. [http://localhost:3030/api-documentation/](http://localhost:3030/api-documentation/)
+5. Запуск тестов - docker exec -it <id of ...web container> npm run test

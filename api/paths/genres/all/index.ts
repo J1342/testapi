@@ -13,6 +13,9 @@ async function GET(req: Request, res: Response) {
             as: 'books'
         }
         });
+        if (genres.length == 0){
+           res.status(404).send();
+        }
         res.json(genres);
     }catch(e){
         res.status(500).send();
@@ -43,6 +46,9 @@ GET.apiDoc = {
       },
       500: {
         description: "Server error"
+      },
+      404: {
+        description: "Not Found"
       }
     },
   };

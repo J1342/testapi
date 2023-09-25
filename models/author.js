@@ -18,7 +18,7 @@ exports.Author = Author;
 function model(sequelize, DataTypes) {
   Author.init({
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true
     },

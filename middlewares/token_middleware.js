@@ -11,7 +11,6 @@ async function verifyToken(req, res, next) {
   if (req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     _jsonwebtoken.default.verify(req.headers.authorization.split(' ')[1], process.env.API_SECRET, async function (err, decode) {
       if (err) {
-        console.log(err);
         req.user = undefined;
       }
       try {

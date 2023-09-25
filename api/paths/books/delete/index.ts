@@ -1,27 +1,27 @@
 import express, { Request, Response } from 'express';
-import db from '../../../models';
+import db from '../../../../models';
+
 
 let operations = {
-    GET
+    DELETE,
 }
 
-async function GET(req: Request, res: Response) {
+async function DELETE(req: Request, res: Response) {
     try{
-        let book = await db.Book.findByPk(req.params.id, {
-            include: db.Author
-        })
-        if (!book){
-           res.status(404).send();
+       await db.Book.destroy({
+        where: {
+            id: Number(req.params.id)
         }
-        res.json(book)
+       })
+       res.send(`Book with id ${req.params.id} is destroyed.`)
     }catch(e){
-        res.status(500).send()
+       res.status(404).send();
     }
 }
 
-GET.apiDoc = {
-    summary: "Fetch one book.",
-    operationId: "fetchOneBook",
+DELETE.apiDoc = {
+    summary: "Delete book(admin role required).",
+    operationId: "deleteBook",
     consumes: ["application/json"],
     parameters: [
       {
@@ -39,18 +39,13 @@ GET.apiDoc = {
     ],
     responses: {
       200: {
-        description: "Fetch one book",
+        description: "Deleted",
         schema: {
-            type: "object",
-            $ref: "#/definitions/BookAndAuthors",
-
+            type: "string",
           },
       },
       404: {
         description: "Not Found"
-      },
-      500: {
-        description: "Server error"
       }
     },
 }

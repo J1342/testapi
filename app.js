@@ -9,8 +9,6 @@ var _author_router = _interopRequireDefault(require("./routes/author_router"));
 var _genre_router = _interopRequireDefault(require("./routes/genre_router"));
 var _auth_routes = _interopRequireDefault(require("./routes/auth_routes"));
 var _oauth_router = _interopRequireDefault(require("./routes/oauth_router"));
-var _expressOpenapi = require("express-openapi");
-var _swaggerUiExpress = _interopRequireDefault(require("swagger-ui-express"));
 var _expressSession = _interopRequireDefault(require("express-session"));
 var _passport = _interopRequireDefault(require("passport"));
 var _token_middleware = _interopRequireDefault(require("./middlewares/token_middleware"));
@@ -21,16 +19,6 @@ const port = process.env.PORT || 8000;
 app.use(_express.default.json());
 app.use(_express.default.urlencoded({
   extended: true
-}));
-(0, _expressOpenapi.initialize)({
-  app,
-  apiDoc: require("./api/api-doc"),
-  paths: "./api/paths"
-});
-app.use("/api-documentation", _swaggerUiExpress.default.serve, _swaggerUiExpress.default.setup(null, {
-  swaggerOptions: {
-    url: `http://localhost:3030/api-docs`
-  }
 }));
 require("dotenv").config();
 const config = require(__dirname + '/config/config.json')['development'];
@@ -56,8 +44,6 @@ app.use('/authors', _token_middleware.default, _author_router.default);
 app.use('/genres', _token_middleware.default, _genre_router.default);
 app.use('/auth', _auth_routes.default);
 app.use('/oauth', _oauth_router.default);
-app.listen(3030, () => {
-  console.log(`Server is Fire at http://localhost:${port}`);
-});
 var _default = app;
 exports.default = _default;
+module.exports = app;

@@ -7,28 +7,29 @@ exports.default = void 0;
 var _models = _interopRequireDefault(require("../../../../models"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 let operations = {
-  GET
+  DELETE
 };
-async function GET(req, res) {
+async function DELETE(req, res) {
   try {
-    let genres = await _models.default.Genre.findAll({
-      include: {
-        model: _models.default.Book,
-        as: 'books'
+    await _models.default.Book.destroy({
+      where: {
+        id: Number(req.params.id)
       }
     });
-    if (genres.length == 0) {
-      res.status(404).send();
-    }
-    res.json(genres);
+    res.send(`Book with id ${req.params.id} is destroyed.`);
   } catch (e) {
-    res.status(500).send();
+    res.status(404).send();
   }
 }
-GET.apiDoc = {
-  summary: "Fetch list of genres.",
-  operationId: "getGenres",
+DELETE.apiDoc = {
+  summary: "Delete book(admin role required).",
+  operationId: "deleteBook",
+  consumes: ["application/json"],
   parameters: [{
+    in: "query",
+    name: "id",
+    type: "number"
+  }, {
     name: "Authorization",
     in: "header",
     description: "JWT access token",
@@ -37,16 +38,10 @@ GET.apiDoc = {
   }],
   responses: {
     200: {
-      description: "List of genres.",
+      description: "Deleted",
       schema: {
-        type: "array",
-        items: {
-          $ref: "#/definitions/Genre"
-        }
+        type: "string"
       }
-    },
-    500: {
-      description: "Server error"
     },
     404: {
       description: "Not Found"

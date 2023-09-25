@@ -11,7 +11,6 @@ async function verifyToken(req: Request, res: Response, next: CallableFunction){
             jwt.verify(req.headers.authorization.split(' ')[1],
                        process.env.API_SECRET, async function (err, decode){
                            if (err) {
-                            console.log(err)
                             req.user = undefined
                            }
                            try{
